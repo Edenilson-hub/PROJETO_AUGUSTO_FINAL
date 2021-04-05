@@ -4,21 +4,21 @@
 
 <?php 
 	/* COMANDO PARA CONECTAR AO SERVIDOR DO BANCO DE DADOS*/
-	$link2 = mysql_connect(HOST, USER, "") or die ("FALHA NA CONEXÃO DO BANCO DE DADOS");
+	$link2 = mysql_connect(HOST, USER, "") or die ("NÃO PUDE CONECTAR");
 	/*COMANDO PARA SELECIONAR O BANCO DE DADOS"*/
-	mysql_select_db("UNAMA") or die("NÃO FOI POSSIVEL CONECTAR AO BANCO DE DADOS");
+	mysql_select_db("UNAMA") or die("NÃO PUDE SELECIONAR O BANCO DE DADOS");
 	/* FAZER A QUERY SQL*/
 	$userid=$_SESSION["plano_status_user"];
 	$query = "select * from usuario where `NOME_USUARIO`='".$userid."'";
-	$result = mysql_query($query) or die("A QUERY DE CONSULTA TESTE FALHOU.");
+	$result = mysql_query($query) or die("QUERY FALHOU.");
 	mysql_free_result($result);
 	if (@$_POST["submit"] <> ""){
-		$ncamp1 = @$_POST["senha anterior"];
-		$ncamp2 = @$_POST["senha atual"];
-		$atualizar = "UPDATE 'usuario' SET( 'SENHA_USUARIO' ) VALUES ('$ncamp1', '$ncamp2');";
-		$update1 = mysql_query($atualizar) or die ("QUERY 2 FALHOU");
+		$ncamp1 = @$_POST["anterior"];
+		$ncamp2 = @$_POST["atual"];
+		$atualiza = "UPDATE `usuario` SET `SENHA_USUARIO` = '".$ncamp2."' where `NOME_USUARIO` ='".$userid."'";
+		$update1 = mysql_query($atualiza) or die ("QUERY FALHOU");
 		if($update1){
-			header("Location:conf_alterar.php");
+			header("Location:conf.php");
 	}
 		mysql_free_result($update1);
 	}
@@ -65,22 +65,25 @@ a {
 	<tr align="center" valign="top">
 		<td width="30" height="350"><p>&nbsp;</p>
 		<table width="500" height="10" border="0" align="center">
-			<form action="alterar.php" method="post" name="form1" id="form1">
+			<form action="../alterar.php" method="post" name="form1" id="form1">
 			 <tr>
-			   <td colspan="3" style="text-align: center">Insira os dados para alterar senha de Edenilson</td>
+			   <td colspan="3" style="text-align: center"><p>Insira os dados solicitados para alteração da senha do usuario:</p> <br>
+				  <p> <?php echo $_SESSION["plano_status_User"]; ?>
+		       <p>&nbsp;</p></td>
+				</p>
 		      </tr>
 			 <tr>
 			   <td style="text-align: center">SENHA ANTERIOR:</td>
-			   <td colspan="2" style="text-align: left"><label for="senha anterior"></label>
-		       <input name="senha anterior" type="password" id="senha anterior" size="30" maxlength="30"></td>
+			   <td colspan="2" style="text-align: left"><label for="anterior"></label>
+		       <input name="anterior" type="password" id="anterior" size="30" maxlength="30"></td>
 		      </tr>
 			 <tr>
 			 	<td width="215" style="text-align: center">SENHA ATUAL:</td>
-				 <td colspan="2" style="text-align: left"><label for="senha atual"></label>
-                 <input name="senha atual" type="password" id="senha atual" size="20" maxlength="20"></td>
+				 <td colspan="2" style="text-align: left"><label for="atual"></label>
+                 <input name="atual" type="password" id="atual" size="20" maxlength="20"></td>
 			  </tr>
 			 <tr>
-				 <td><a href="principal.php">VOLTAR</a></td>
+				 <td><a href="../principal.php">VOLTAR</a></td>
 				 <td width="128"><input type="submit" name="submit" id="submit" value="Enviar"></td>
 				 <td width="143"><input type="reset" name="reset" id="reset" value="Redefinir"></td>
 			  </tr>

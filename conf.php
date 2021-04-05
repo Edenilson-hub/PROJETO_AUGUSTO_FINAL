@@ -38,7 +38,7 @@ a:active {
 echo $_SESSION["plano_status_User"];
 ?>
           <br>
-        Usu&aacute;rio cadastrado com SUCESSO!!!</p>
+        Operação realizada com Sucesso!!</p>
       <a href="principal.php">VOLTAR</a><br>    <br>      </td>
     </tr>
   </table>

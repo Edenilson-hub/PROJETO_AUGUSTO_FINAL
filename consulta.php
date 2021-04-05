@@ -1,51 +1,49 @@
-<?php include("db")
-?>
-
+<?php include("db.php") ?>
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Pagina de Consulta</title>
 </head>
 <body>
 <div>
 <table width="725" border="1">
 <tbody>
 <tr>
-<td><?php
-$link = mysql_connect(HOST, USER, "") or die ("NÃO PUDE CONECTAR");
-mysql_select_db("UNAMA") or die("NÃO PUDE SELECIONAR O BANCO DE DADOS");
+<td with="725" border="1">
+	<?php
+	$link = mysql_connect(HOST, USER, "") or die("NÃO PUDE CONECTAR");
+	mysql_select_db("UNAMA") or die("NÃO PUDE SELECIONAR O BANCO DE DADOS");
 ?>
-</td>
 <form id="form1" name="frmbusca" method="post" action="consulta.php">
-<input type="palavra" type="textfield" id="palavra" size="78" maxlength="70">
+<input nome="palavra" type="text" id="palavra" size="70" maxlength="70">
 <input type="submit" name="submit" id="submit" value="Buscar">
 </form>
 <?php
-$palavra = trim($_POST['$palavra']);
-if ($palavra <> "") {
+$palavra = trim($_POST['palavra']);
+if ($palavra <> ""){
     #FAZENDO QUERY SQL
-    $query = "SELECT * FROM usuario WHERE NOME_USUARIO = '%$palavra%' ORDER BY ID_USUARIO"; 
+    $query = "SELECT * FROM `usuario` where `NOME_USUARIO` = '%$palavra%' ORDER BY `ID_USUARIO` "; 
   $result = mysql_query($query) or die("query falhou");
   #
   print "<table>\n";
   print '
   <tr>
-    <td>COD</td>
-    <td>NOME</td>
+    <td>CODIGO:</td>
+    <td>NOME:</td>
     </tr>
     ';
     while ($line = mysql_fetch_array($result, MYSQL_ASSOC)){
             print "<tr>";
             #NOME DO CAMPO QUE LEVA AO TEXTO
-        $line[NOME_USUARIO];
+        $line["NOME_USUARIO"];
             #função que converte caracteres acentuadas por maiusculas acentuadas.
-        $tituloMaiuscula = strtoupper(strt($line[NOME_USUARIO], "áéíóú", "ÁÉÍÓÚ"));
-        print "<td>$line[ID_USUARIO]</td>"
-        print "<td>$tituloMaiuscula</td>"
-        print "</tr>"
+        $tituloMaiuscula = strtoupper(strt($line["NOME_USUARIO"], "áéíóúâêôãõàèìòùç", "ÁÉÍÓÚÂÊÔÃÕÀÈÌÒÙÇ"));
+        print "<td>$line[ID_USUARIO]</td>";
+        print "<td>$tituloMaiuscula</td>";
+        print "</tr>";
     }
     print "</table>";
     #Liberar o resultado
