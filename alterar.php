@@ -1,31 +1,31 @@
-<?php session_start(); ?>
-<?php if (@$_SESSION["plano_status"] <> "NOME_USUARIO") header("location: login.php") ?>
-<?php include("db.php") ?>
-
-<?php 
-	/* COMANDO PARA CONECTAR AO SERVIDOR DO BANCO DE DADOS*/
-	$link2 = mysql_connect(HOST, USER, "") or die ("NÃO PUDE CONECTAR");
-	/*COMANDO PARA SELECIONAR O BANCO DE DADOS"*/
-	mysql_select_db("UNAMA") or die("NÃO PUDE SELECIONAR O BANCO DE DADOS");
-	/* FAZER A QUERY SQL*/
-	$userid=$_SESSION["plano_status_user"];
-	$query = "select * from usuario where `NOME_USUARIO`='".$userid."'";
-	$result = mysql_query($query) or die("QUERY FALHOU.");
-	mysql_free_result($result);
+<?php session_start();?>
+<?php if (@$_SESSION["plano_status"] <> "NOME_USUARIO") header("location: login.php")?>
+<?php include("db.php")?>
+<?
 	if (@$_POST["submit"] <> ""){
+		$userid=$_SESSION["plano_status_User"];
 		$ncamp1 = @$_POST["anterior"];
 		$ncamp2 = @$_POST["atual"];
-		$atualiza = "UPDATE `usuario` SET `SENHA_USUARIO` = '".$ncamp2."' where `NOME_USUARIO` ='".$userid."'";
-		$update1 = mysql_query($atualiza) or die ("QUERY FALHOU");
-		if($update1){
-			header("Location:conf.php");
-	}
-		mysql_free_result($update1);
-	}
-/*FECHANDO CONEXÃO COM SERVIDOR*/
-	mysql_close($link2);
-?>
-	
+		/* COMANDO PARA CONECTAR AO SERVIDOR DO BANCO DE DADOS*/
+	$link2 = mysql_connect(HOST, USER, "");
+		/*COMANDO PARA SELECIONAR O BANCO DE DADOS"*/
+	mysql_select_db("UNAMA");
+		/* FAZER A QUERY SQL*/
+		$result = mysql_query("select * from `usuario` where `NOME_USUARIO`='".$userid."'") or die(mysql_error());	
+		if ($linha = mysql_fetch_array($result)) { 
+		if (strtoupper($linha["SENHA_USUARIO"]) == strtoupper($ncamp1)) {
+		$atualiza = "UPDATE `usuario` SET `SENHA_USUARIO` = '".$ncamp2."' where `NOME_USUARIO` = '".$userid."'";
+		mysql_query($atualiza) or die (mysql_error());
+		/*if($update1){*/
+		header("Location:conf.php");
+		}
+/*	}*/
+	/*	mysql_free_result($atualiza);*/
+}/*FECHANDO CONEXÃO COM SERVIDOR*/
+mysql_free_result($result);
+mysql_close($link2);
+}
+?>	
 <html>
 <head>
 <meta charset="utf-8">
@@ -65,7 +65,7 @@ a {
 	<tr align="center" valign="top">
 		<td width="30" height="350"><p>&nbsp;</p>
 		<table width="500" height="10" border="0" align="center">
-			<form action="../alterar.php" method="post" name="form1" id="form1">
+			<form action="alterar.php" method="post" name="form1" id="form1">
 			 <tr>
 			   <td colspan="3" style="text-align: center"><p>Insira os dados solicitados para alteração da senha do usuario:</p> <br>
 				  <p> <?php echo $_SESSION["plano_status_User"]; ?>
